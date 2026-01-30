@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maestre - Book Club</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2C1810;
+            --secondary: #8B4513;
+            --accent: #D4A373;
+            --light: #F5EDE0;
+            --cream: #FAF6F0;
+            --text: #1A1A1A;
+            --text-light: #5C5C5C;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #f2e0d8;
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Decorative daisy elements */
+        .daisy {
+            position: fixed;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        .daisy-1 {
+            top: 10%;
+            right: 5%;
+            width: 120px;
+            height: 120px;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .daisy-2 {
+            bottom: 15%;
+            left: 8%;
+            width: 100px;
+            height: 100px;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        .daisy-3 {
+            top: 50%;
+            left: 3%;
+            width: 80px;
+            height: 80px;
+            animation: float 22s ease-in-out infinite;
+            animation-delay: 2s;
+        }
+
+        .daisy-4 {
+            top: 30%;
+            right: 10%;
+            width: 90px;
+            height: 90px;
+            animation: float 18s ease-in-out infinite reverse;
+            animation-delay: 1s;
+        }
+
+        .daisy-5 {
+            bottom: 40%;
+            right: 15%;
+            width: 70px;
+            height: 70px;
+            animation: float 23s ease-in-out infinite;
+            animation-delay: 3s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(5deg); }
+            66% { transform: translate(-20px, 20px) rotate(-5deg); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -2px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            color: var(--secondary);
+            font-style: italic;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .edition {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1rem;
+            color: var(--text-light);
+            line-height: 1.8;
+            padding: 0 20px;
+        }
+
+        .description strong {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .location-info {
+            max-width: 700px;
+            margin: 30px auto 0;
+            padding: 25px 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .location-icon {
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .location-text {
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .location-text strong {
+            font-size: 1.1rem;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Events Grid */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+
+        .event-card:nth-child(1) { animation-delay: 0.1s; }
+        .event-card:nth-child(2) { animation-delay: 0.2s; }
+        .event-card:nth-child(3) { animation-delay: 0.3s; }
+        .event-card:nth-child(4) { animation-delay: 0.4s; }
+        .event-card:nth-child(5) { animation-delay: 0.5s; }
+        .event-card:nth-child(6) { animation-delay: 0.6s; }
+        .event-card:nth-child(7) { animation-delay: 0.7s; }
+        .event-card:nth-child(8) { animation-delay: 0.8s; }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent) 0%, var(--secondary) 100%);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .event-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .event-date {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .event-date::before {
+            content: '📅';
+            font-size: 1.2rem;
+        }
+
+        .event-book {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .event-author {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .event-time {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            padding: 8px 0;
+            border-top: 1px solid var(--light);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .event-time::before {
+            content: '🕐';
+        }
+
+        .event-selector {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+        }
+
+        .event-selector.capria {
+            background: linear-gradient(135deg, #D4A373 0%, #B8885D 100%);
+            color: white;
+        }
+
+        .event-selector.bibliotecarie {
+            background: linear-gradient(135deg, #8B4513 0%, #6B3410 100%);
+            color: white;
+        }
+
+        /* Edit Mode Styles */
+        .edit-mode .event-card {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .edit-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .event-card:hover .edit-btn {
+            opacity: 1;
+        }
+
+        .edit-btn:hover {
+            background: var(--secondary);
+            transform: scale(1.05);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+            animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--light);
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--light);
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: white;
+            cursor: pointer;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Control Panel */
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .control-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-btn:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.2);
+        }
+
+        .control-btn.add {
+            background: var(--accent);
+        }
+
+        .control-btn.add:hover {
+            background: var(--secondary);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding: 30px 20px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: white;
+            border: 2px solid var(--light);
+            border-radius: 50px;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border-color: var(--accent);
+        }
+
+        .social-link.instagram:hover {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+            border-color: #bc1888;
+        }
+
+        .social-link.facebook:hover {
+            background: #1877f2;
+            color: white;
+            border-color: #1877f2;
+        }
+
+        .social-link.whatsapp:hover,
+        .social-link.whatsapp-group:hover {
+            background: #25d366;
+            color: white;
+            border-color: #25d366;
+        }
+
+        .social-icon {
+            font-size: 1.2rem;
+        }
+
+        footer a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .control-btn {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+
+            .location-info {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .social-links {
+                flex-direction: column;
+                align-items: stretch;
+                max-width: 300px;
+                margin: 0 auto 20px;
+            }
+
+            .social-link {
+                justify-content: center;
+            }
+
+            .daisy {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative daisies -->
+    <svg class="daisy daisy-1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <g>
+            <!-- Petals -->
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95"/>
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95" transform="rotate(45 50 50)"/>
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95" transform="rotate(90 50 50)"/>
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95" transform="rotate(135 50 50)"/>
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95" transform="rotate(180 50 50)"/>
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95" transform="rotate(225 50 50)"/>
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95" transform="rotate(270 50 50)"/>
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95" transform="rotate(315 50 50)"/>
+            <!-- Center -->
+            <circle cx="50" cy="50" r="12" fill="#E6A834"/>
+            <!-- Stem -->
+            <rect x="48" y="50" width="4" height="35" fill="#5A7C3E" rx="2"/>
+            <!-- Leaves -->
+            <ellipse cx="40" cy="70" rx="8" ry="4" fill="#5A7C3E" transform="rotate(-30 40 70)"/>
+            <ellipse cx="60" cy="75" rx="8" ry="4" fill="#5A7C3E" transform="rotate(30 60 75)"/>
+        </g>
+    </svg>
+
+    <svg class="daisy daisy-2" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <g>
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95"/>
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95" transform="rotate(40 50 50)"/>
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95" transform="rotate(80 50 50)"/>
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95" transform="rotate(120 50 50)"/>
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95" transform="rotate(160 50 50)"/>
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95" transform="rotate(200 50 50)"/>
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95" transform="rotate(240 50 50)"/>
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95" transform="rotate(280 50 50)"/>
+            <ellipse cx="50" cy="25" rx="8" ry="18" fill="#FFFFFF" opacity="0.95" transform="rotate(320 50 50)"/>
+            <circle cx="50" cy="50" r="12" fill="#D4A044"/>
+            <rect x="48" y="50" width="4" height="40" fill="#5A7C3E" rx="2"/>
+            <ellipse cx="42" cy="65" rx="7" ry="4" fill="#5A7C3E" transform="rotate(-25 42 65)"/>
+            <ellipse cx="58" cy="72" rx="7" ry="4" fill="#5A7C3E" transform="rotate(25 58 72)"/>
+        </g>
+    </svg>
+
+    <svg class="daisy daisy-3" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <g>
+            <ellipse cx="50" cy="28" rx="7" ry="16" fill="#FFFFFF" opacity="0.95"/>
+            <ellipse cx="50" cy="28" rx="7" ry="16" fill="#FFFFFF" opacity="0.95" transform="rotate(50 50 50)"/>
+            <ellipse cx="50" cy="28" rx="7" ry="16" fill="#FFFFFF" opacity="0.95" transform="rotate(100 50 50)"/>
+            <ellipse cx="50" cy="28" rx="7" ry="16" fill="#FFFFFF" opacity="0.95" transform="rotate(150 50 50)"/>
+            <ellipse cx="50" cy="28" rx="7" ry="16" fill="#FFFFFF" opacity="0.95" transform="rotate(200 50 50)"/>
+            <ellipse cx="50" cy="28" rx="7" ry="16" fill="#FFFFFF" opacity="0.95" transform="rotate(250 50 50)"/>
+            <ellipse cx="50" cy="28" rx="7" ry="16" fill="#FFFFFF" opacity="0.95" transform="rotate(300 50 50)"/>
+            <circle cx="50" cy="50" r="11" fill="#E0A040"/>
+            <rect x="48" y="50" width="4" height="35" fill="#5A7C3E" rx="2"/>
+            <ellipse cx="43" cy="68" rx="6" ry="3" fill="#5A7C3E" transform="rotate(-28 43 68)"/>
+        </g>
+    </svg>
+
+    <svg class="daisy daisy-4" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <g>
+            <ellipse cx="50" cy="26" rx="8" ry="17" fill="#FFFFFF" opacity="0.95"/>
+            <ellipse cx="50" cy="26" rx="8" ry="17" fill="#FFFFFF" opacity="0.95" transform="rotate(45 50 50)"/>
+            <ellipse cx="50" cy="26" rx="8" ry="17" fill="#FFFFFF" opacity="0.95" transform="rotate(90 50 50)"/>
+            <ellipse cx="50" cy="26" rx="8" ry="17" fill="#FFFFFF" opacity="0.95" transform="rotate(135 50 50)"/>
+            <ellipse cx="50" cy="26" rx="8" ry="17" fill="#FFFFFF" opacity="0.95" transform="rotate(180 50 50)"/>
+            <ellipse cx="50" cy="26" rx="8" ry="17" fill="#FFFFFF" opacity="0.95" transform="rotate(225 50 50)"/>
+            <ellipse cx="50" cy="26" rx="8" ry="17" fill="#FFFFFF" opacity="0.95" transform="rotate(270 50 50)"/>
+            <ellipse cx="50" cy="26" rx="8" ry="17" fill="#FFFFFF" opacity="0.95" transform="rotate(315 50 50)"/>
+            <circle cx="50" cy="50" r="11" fill="#DAA842"/>
+            <rect x="48" y="50" width="4" height="38" fill="#5A7C3E" rx="2"/>
+            <ellipse cx="41" cy="72" rx="7" ry="4" fill="#5A7C3E" transform="rotate(-32 41 72)"/>
+            <ellipse cx="59" cy="68" rx="7" ry="4" fill="#5A7C3E" transform="rotate(28 59 68)"/>
+        </g>
+    </svg>
+
+    <svg class="daisy daisy-5" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <g>
+            <ellipse cx="50" cy="30" rx="7" ry="15" fill="#FFFFFF" opacity="0.95"/>
+            <ellipse cx="50" cy="30" rx="7" ry="15" fill="#FFFFFF" opacity="0.95" transform="rotate(60 50 50)"/>
+            <ellipse cx="50" cy="30" rx="7" ry="15" fill="#FFFFFF" opacity="0.95" transform="rotate(120 50 50)"/>
+            <ellipse cx="50" cy="30" rx="7" ry="15" fill="#FFFFFF" opacity="0.95" transform="rotate(180 50 50)"/>
+            <ellipse cx="50" cy="30" rx="7" ry="15" fill="#FFFFFF" opacity="0.95" transform="rotate(240 50 50)"/>
+            <ellipse cx="50" cy="30" rx="7" ry="15" fill="#FFFFFF" opacity="0.95" transform="rotate(300 50 50)"/>
+            <circle cx="50" cy="50" r="10" fill="#E6AC38"/>
+            <rect x="48" y="50" width="4" height="32" fill="#5A7C3E" rx="2"/>
+            <ellipse cx="44" cy="70" rx="6" ry="3" fill="#5A7C3E" transform="rotate(-25 44 70)"/>
+        </g>
+    </svg>
+
+    <div class="container">
+        <header>
+            <h1>Maestre</h1>
+            <p class="subtitle">Book Club Diffuso</p>
+            <p class="edition">Seconda Edizione 2025-2026</p>
+            <div class="description">
+                Un viaggio attraverso la letteratura scritta da donne. Ispirato dal libro di <strong>Carolina Capria</strong> 
+                (@lhascrittounafemmina), questo gruppo di lettura celebra grandi autrici che hanno insegnato 
+                a disobbedire e ascoltare sé stesse a generazioni di donne.
+            </div>
+            <div class="location-info">
+                <div class="location-icon">📍</div>
+                <div class="location-text">
+                    <strong>Biblioteca di Segrate</strong><br>
+                    Centro Civico Giuseppe Verdi<br>
+                    Via XXV Aprile 41, Segrate
+                </div>
+            </div>
+        </header>
+
+        <div class="events-grid" id="eventsGrid">
+            <!-- Events will be loaded here -->
+        </div>
+
+        <footer>
+            <div class="social-links">
+                <a href="https://www.instagram.com/bibliotecasegrate/" target="_blank" class="social-link instagram">
+                    <span class="social-icon">📷</span>
+                    <span>Instagram</span>
+                </a>
+                <a href="https://www.facebook.com/biblioteca.segrate.7" target="_blank" class="social-link facebook">
+                    <span class="social-icon">👥</span>
+                    <span>Facebook</span>
+                </a>
+                <a href="https://www.whatsapp.com/channel/0029VbBIwrZCRs1v9Nlt9L3E" target="_blank" class="social-link whatsapp">
+                    <span class="social-icon">📢</span>
+                    <span>Canale WhatsApp</span>
+                </a>
+                <a href="https://chat.whatsapp.com/DKCO2e4qQChBZBXHth1Qks" target="_blank" class="social-link whatsapp-group">
+                    <span class="social-icon">💬</span>
+                    <span>Gruppo WhatsApp</span>
+                </a>
+            </div>
+            <p style="margin-top: 30px; font-size: 0.85rem;">
+                Segui <a href="https://www.instagram.com/lhascrittounafemmina" target="_blank">@lhascrittounafemmina</a> 
+                per scoprire il progetto originale
+            </p>
+        </footer>
+    </div>
+
+    <!-- Control Panel -->
+    <div class="controls">
+        <button class="control-btn toggle-edit" onclick="toggleEditMode()">
+            <span>✏️</span> Modifica
+        </button>
+        <button class="control-btn add" onclick="addEvent()">
+            <span>➕</span> Aggiungi
+        </button>
+    </div>
+
+    <!-- Modal for editing -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <h2>Modifica Appuntamento</h2>
+            <form id="editForm">
+                <input type="hidden" id="editIndex">
+                <div class="form-group">
+                    <label for="editDate">Data</label>
+                    <input type="text" id="editDate" placeholder="es. Martedì 3 febbraio 2026" required>
+                </div>
+                <div class="form-group">
+                    <label for="editBook">Titolo del Libro</label>
+                    <input type="text" id="editBook" placeholder="es. Middlemarch" required>
+                </div>
+                <div class="form-group">
+                    <label for="editAuthor">Autrice</label>
+                    <input type="text" id="editAuthor" placeholder="es. George Eliot" required>
+                </div>
+                <div class="form-group">
+                    <label for="editTime">Orario</label>
+                    <input type="text" id="editTime" placeholder="es. 18:30 – 20:00" required>
+                </div>
+                <div class="form-group">
+                    <label for="editSelector">Selezionato da</label>
+                    <select id="editSelector" required>
+                        <option value="capria">Carolina Capria</option>
+                        <option value="bibliotecarie">Bibliotecarie e lettrici</option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Annulla</button>
+                    <button type="submit" class="btn btn-primary">Salva</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initial events data - based on Segrate calendar 2025-2026
+        let events = [
+            {
+                date: "Martedì 16 dicembre 2025",
+                book: "Memoria di ragazza",
+                author: "Annie Ernaux",
+                time: "18:30 – 20:00",
+                selector: "bibliotecarie"
+            },
+            {
+                date: "Martedì 3 febbraio 2026",
+                book: "Middlemarch",
+                author: "George Eliot",
+                time: "18:30 – 20:00",
+                selector: "capria"
+            },
+            {
+                date: "Martedì 24 marzo 2026",
+                book: "Orlando",
+                author: "Virginia Woolf",
+                time: "18:30 – 20:00",
+                selector: "capria"
+            },
+            {
+                date: "Martedì 12 maggio 2026",
+                book: "La campana di vetro",
+                author: "Sylvia Plath",
+                time: "18:30 – 20:00",
+                selector: "capria"
+            },
+            {
+                date: "Martedì 30 giugno 2026",
+                book: "Il re ombra",
+                author: "Maaza Mengiste",
+                time: "18:30 – 20:00",
+                selector: "bibliotecarie"
+            },
+            {
+                date: "Martedì 15 settembre 2026",
+                book: "Il colore viola",
+                author: "Alice Walker",
+                time: "18:30 – 20:00",
+                selector: "capria"
+            },
+            {
+                date: "Martedì 3 novembre 2026",
+                book: "La vita sessuale dei nostri antenati",
+                author: "Bianca Pitzorno",
+                time: "18:30 – 20:00",
+                selector: "capria"
+            },
+            {
+                date: "Martedì 15 dicembre 2026",
+                book: "Le cattive",
+                author: "Camila Sosa Villada",
+                time: "18:30 – 20:00",
+                selector: "bibliotecarie"
+            }
+        ];
+
+        let editMode = false;
+
+        // Load events from localStorage if available
+        function loadEvents() {
+            const saved = localStorage.getItem('maestreEvents');
+            if (saved) {
+                events = JSON.parse(saved);
+            }
+            renderEvents();
+        }
+
+        // Save events to localStorage
+        function saveEvents() {
+            localStorage.setItem('maestreEvents', JSON.stringify(events));
+        }
+
+        // Render events
+        function renderEvents() {
+            const grid = document.getElementById('eventsGrid');
+            grid.innerHTML = '';
+            
+            events.forEach((event, index) => {
+                const selectorText = event.selector === 'capria' 
+                    ? 'Selezionato da Carolina Capria' 
+                    : 'Scelto da bibliotecarie e lettrici';
+                const selectorClass = event.selector || 'capria';
+                
+                const card = document.createElement('div');
+                card.className = 'event-card';
+                card.innerHTML = `
+                    ${editMode ? `<button class="edit-btn" onclick="editEvent(${index})">Modifica</button>` : ''}
+                    <div class="event-date">${event.date}</div>
+                    <div class="event-book">${event.book}</div>
+                    <div class="event-author">${event.author}</div>
+                    <div class="event-time">${event.time}</div>
+                    <div class="event-selector ${selectorClass}">${selectorText}</div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Update body class
+            document.body.className = editMode ? 'edit-mode' : '';
+        }
+
+        // Toggle edit mode
+        function toggleEditMode() {
+            editMode = !editMode;
+            const btn = document.querySelector('.toggle-edit');
+            btn.innerHTML = editMode ? '<span>👁️</span> Visualizza' : '<span>✏️</span> Modifica';
+            renderEvents();
+        }
+
+        // Add new event
+        function addEvent() {
+            const newEvent = {
+                date: "Nuova data",
+                book: "Nuovo libro",
+                author: "Nuova autrice",
+                time: "18:30 – 20:00",
+                selector: "capria"
+            };
+            events.push(newEvent);
+            saveEvents();
+            renderEvents();
+            editEvent(events.length - 1);
+        }
+
+        // Edit event
+        function editEvent(index) {
+            const event = events[index];
+            document.getElementById('editIndex').value = index;
+            document.getElementById('editDate').value = event.date;
+            document.getElementById('editBook').value = event.book;
+            document.getElementById('editAuthor').value = event.author;
+            document.getElementById('editTime').value = event.time;
+            document.getElementById('editSelector').value = event.selector || 'capria';
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+        // Handle form submission
+        document.getElementById('editForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const index = document.getElementById('editIndex').value;
+            events[index] = {
+                date: document.getElementById('editDate').value,
+                book: document.getElementById('editBook').value,
+                author: document.getElementById('editAuthor').value,
+                time: document.getElementById('editTime').value,
+                selector: document.getElementById('editSelector').value
+            };
+            saveEvents();
+            renderEvents();
+            closeModal();
+        });
+
+        // Close modal on outside click
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Initialize
+        loadEvents();
+    </script>
+</body>
+</html>
